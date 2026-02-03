@@ -1,0 +1,17 @@
+#!/bin/bash
+SNAPSHOT_NAME="snap-$(date +%Y-%m-%d)"
+LASTWEEK=`date -d "1 week ago" +%Y-%m-%d`
+
+for i in $(qm list | grep -v VMID | awk '{print $1}'); do
+	VMIDS+=( $i )
+done
+
+for VM in $(printf "%s\n" "${VMIDS[@]}"); do
+  qm snapshot $VM $SNAPSHOT_NAME --description "Scheduled Snapshot" --vmstate true
+done
+
+for VM in $(printf "%s\n" "${VMIDS[@]}"); do
+	for SNAPSHOT in $(qm listsnapshot $VM | grep $LASTWEEK | awk '{print $2}'); do
+		qm delsnapshot $VM $SNAPSHOT
+	done
+done
