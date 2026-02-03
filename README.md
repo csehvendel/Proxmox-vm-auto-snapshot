@@ -2,7 +2,7 @@
 
 a rock-solid bash script for automatic snapshotting of VMs with vmstate, with 1 week retention
 
-### 3. Installing
+# Installing
 
 simply put the script to /etc/cron.daily/ folder
 
